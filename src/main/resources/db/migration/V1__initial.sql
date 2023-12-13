@@ -51,8 +51,7 @@ create table report (
     status varchar not null,
     created_at timestamp default now(),
     updated_at timestamp,
-    account_id int not null references account (id) on delete cascade,
-    unique (type, start_at, end_at, platform_id)
+    account_id int not null references account (id) on delete cascade
 );
 
 create table history (
