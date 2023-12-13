@@ -38,7 +38,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping(path = "/platforms", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/platforms", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class PlatformsController {
 
@@ -64,7 +64,7 @@ public class PlatformsController {
 
     private final CreateSaleService createSaleService;
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Platform createPlatform(@Valid @RequestBody CreatePlatformRequest request) {
         return createPlatformService.create(request);
@@ -76,11 +76,11 @@ public class PlatformsController {
     }
 
     @GetMapping("/{id}")
-    public Platform getAllPlatforms(@PathVariable Long id) {
+    public Platform getPlatformById(@PathVariable Long id) {
         return loadPlatformByIdService.loadById(id);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public Platform updatePlatform(@PathVariable Long id, @Valid @RequestBody UpdatePlatformRequest request) {
         return updatePlatformService.update(id, request);
     }
@@ -91,7 +91,7 @@ public class PlatformsController {
         deletePlatformService.delete(id);
     }
 
-    @PostMapping("/{platformId}/products")
+    @PostMapping(path = "/{platformId}/products", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Product createProductOnPlatform(@PathVariable Long platformId,
             @Valid @RequestBody CreateProductRequest request) {
@@ -108,7 +108,7 @@ public class PlatformsController {
         return loadProductByIdService.loadById(platformId, productId);
     }
 
-    @PutMapping("/{platformId}/products/{productId}")
+    @PutMapping(path = "/{platformId}/products/{productId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public Product updateProduct(@PathVariable Long platformId, @PathVariable Long productId,
             @Valid @RequestBody UpdateProductRequest request) {
         return updateProductService.update(platformId, productId, request);
@@ -120,7 +120,7 @@ public class PlatformsController {
         deleteProductService.delete(platformId, productId);
     }
 
-    @PostMapping("/{platformId}/sale")
+    @PostMapping(path = "/{platformId}/sale", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Sale createSaleOnPlatform(@PathVariable Long platformId, @RequestBody CreateSaleRequest request) {
         return createSaleService.create(platformId, request);
