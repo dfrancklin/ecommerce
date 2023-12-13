@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import br.com.company.ecommerce.dtos.ErrorResponse;
 import jakarta.persistence.EntityNotFoundException;
@@ -39,6 +40,12 @@ public class GlobalExceptionHandler {
 	private static final String INVALID_CONTENT_TYPE_MESSAGE = "Invalid content-type";
 
 	private static final String POSSIBLY_DUPLICATED_RECORDS_MESSAGE = "The record you are trying to create probably exists already. Check your data before trying again.";
+
+	@ExceptionHandler(NoResourceFoundException.class)
+	public ResponseEntity<ErrorResponse> noResourceFoundException(NoResourceFoundException exception,
+			WebRequest request) {
+		return of(HttpStatus.NOT_FOUND, exception, request, exception.getMessage());
+	}
 
 	@ExceptionHandler(BadCredentialsException.class)
 	public ResponseEntity<ErrorResponse> badCredentialsException(BadCredentialsException exception,
