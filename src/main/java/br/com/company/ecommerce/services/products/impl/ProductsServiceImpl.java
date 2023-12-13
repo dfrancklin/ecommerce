@@ -1,5 +1,7 @@
 package br.com.company.ecommerce.services.products.impl;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.company.ecommerce.dtos.CreateProductRequest;
@@ -8,11 +10,12 @@ import br.com.company.ecommerce.models.Product;
 import br.com.company.ecommerce.repositories.ProductsRepository;
 import br.com.company.ecommerce.services.platforms.LoadPlatformByIdService;
 import br.com.company.ecommerce.services.products.CreateProductService;
+import br.com.company.ecommerce.services.products.LoadAllProductsService;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class ProductsServiceImpl implements CreateProductService {
+public class ProductsServiceImpl implements CreateProductService, LoadAllProductsService {
 
     private final LoadPlatformByIdService loadPlatformByIdService;
 
@@ -29,6 +32,13 @@ public class ProductsServiceImpl implements CreateProductService {
                 .build();
 
         return repository.save(product);
+    }
+
+    @Override
+    public Page<Product> loadAll(Long platformId, Pageable pageable) {
+        Platform platform = loadPlatformByIdService.loadById(platformId);
+
+        return repository.findAllByPlatform(platform, pageable);
     }
 
 }
