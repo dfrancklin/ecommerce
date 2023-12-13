@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,7 @@ import br.com.company.ecommerce.dtos.CreatePlatformRequest;
 import br.com.company.ecommerce.models.Platform;
 import br.com.company.ecommerce.services.platforms.CreatePlatformService;
 import br.com.company.ecommerce.services.platforms.LoadAllPlatformsService;
+import br.com.company.ecommerce.services.platforms.LoadPlatformByIdService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -28,6 +30,8 @@ public class PlatformsController {
 
     private final LoadAllPlatformsService loadAllPlatformsService;
 
+    private final LoadPlatformByIdService loadPlatformByIdService;
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Platform createPlatform(@Valid @RequestBody CreatePlatformRequest request) {
@@ -37,6 +41,11 @@ public class PlatformsController {
     @GetMapping
     public Page<Platform> getAllPlatforms(@ParameterObject Pageable pageable) {
         return loadAllPlatformsService.loadAll(pageable);
+    }
+
+    @GetMapping("/{id}")
+    public Platform getAllPlatforms(@PathVariable Long id) {
+        return loadPlatformByIdService.loadById(id);
     }
 
 }
