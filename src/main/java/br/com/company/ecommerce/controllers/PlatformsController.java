@@ -17,10 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.company.ecommerce.dtos.CreatePlatformRequest;
 import br.com.company.ecommerce.dtos.CreateProductRequest;
+import br.com.company.ecommerce.dtos.CreateSaleRequest;
 import br.com.company.ecommerce.dtos.UpdatePlatformRequest;
 import br.com.company.ecommerce.dtos.UpdateProductRequest;
 import br.com.company.ecommerce.models.Platform;
 import br.com.company.ecommerce.models.Product;
+import br.com.company.ecommerce.models.Sale;
 import br.com.company.ecommerce.services.platforms.CreatePlatformService;
 import br.com.company.ecommerce.services.platforms.DeletePlatformService;
 import br.com.company.ecommerce.services.platforms.LoadAllPlatformsService;
@@ -31,6 +33,7 @@ import br.com.company.ecommerce.services.products.DeleteProductService;
 import br.com.company.ecommerce.services.products.LoadAllProductsService;
 import br.com.company.ecommerce.services.products.LoadProductByIdService;
 import br.com.company.ecommerce.services.products.UpdateProductService;
+import br.com.company.ecommerce.services.sales.CreateSaleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -58,6 +61,8 @@ public class PlatformsController {
     private final UpdateProductService updateProductService;
 
     private final DeleteProductService deleteProductService;
+
+    private final CreateSaleService createSaleService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -113,6 +118,12 @@ public class PlatformsController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteProduct(@PathVariable Long platformId, @PathVariable Long productId) {
         deleteProductService.delete(platformId, productId);
+    }
+
+    @PostMapping("/{platformId}/sale")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Sale createSaleOnPlatform(@PathVariable Long platformId, @RequestBody CreateSaleRequest request) {
+        return createSaleService.create(platformId, request);
     }
 
 }
