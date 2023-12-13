@@ -34,10 +34,10 @@ create table sale (
 
 create table sale_item (
     id serial primary key not null,
-    sale_id int not null references platform (id) on delete cascade,
-    product_id int not null references platform (id) on delete cascade,
     sold_price money not null,
     amount int not null,
+    sale_id int not null references sale (id) on delete cascade,
+    product_id int not null references product (id) on delete cascade,
     unique (sale_id, product_id)
 );
 
@@ -51,5 +51,6 @@ create table report (
     status varchar not null,
     created_at timestamp default now(),
     updated_at timestamp,
+    account_id int not null references account (id) on delete cascade,
     unique (type, start_at, end_at, platform_id)
 );
