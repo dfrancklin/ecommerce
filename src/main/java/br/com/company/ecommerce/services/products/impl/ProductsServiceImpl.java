@@ -12,6 +12,7 @@ import br.com.company.ecommerce.models.Product;
 import br.com.company.ecommerce.repositories.ProductsRepository;
 import br.com.company.ecommerce.services.platforms.LoadPlatformByIdService;
 import br.com.company.ecommerce.services.products.CreateProductService;
+import br.com.company.ecommerce.services.products.DeleteProductService;
 import br.com.company.ecommerce.services.products.LoadAllProductsService;
 import br.com.company.ecommerce.services.products.LoadProductByIdService;
 import br.com.company.ecommerce.services.products.UpdateProductService;
@@ -20,8 +21,8 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class ProductsServiceImpl
-        implements CreateProductService, LoadAllProductsService, LoadProductByIdService, UpdateProductService {
+public class ProductsServiceImpl implements CreateProductService, LoadAllProductsService, LoadProductByIdService,
+        UpdateProductService, DeleteProductService {
 
     private final LoadPlatformByIdService loadPlatformByIdService;
 
@@ -68,6 +69,13 @@ public class ProductsServiceImpl
         }
 
         return repository.save(product);
+    }
+
+    @Override
+    public void delete(Long platformId, Long productId) {
+        Product product = loadById(platformId, productId);
+
+        repository.delete(product);
     }
 
 }

@@ -27,6 +27,7 @@ import br.com.company.ecommerce.services.platforms.LoadAllPlatformsService;
 import br.com.company.ecommerce.services.platforms.LoadPlatformByIdService;
 import br.com.company.ecommerce.services.platforms.UpdatePlatformService;
 import br.com.company.ecommerce.services.products.CreateProductService;
+import br.com.company.ecommerce.services.products.DeleteProductService;
 import br.com.company.ecommerce.services.products.LoadAllProductsService;
 import br.com.company.ecommerce.services.products.LoadProductByIdService;
 import br.com.company.ecommerce.services.products.UpdateProductService;
@@ -55,6 +56,8 @@ public class PlatformsController {
     private final LoadProductByIdService loadProductByIdService;
 
     private final UpdateProductService updateProductService;
+
+    private final DeleteProductService deleteProductService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -104,6 +107,12 @@ public class PlatformsController {
     public Product updateProduct(@PathVariable Long platformId, @PathVariable Long productId,
             @Valid @RequestBody UpdateProductRequest request) {
         return updateProductService.update(platformId, productId, request);
+    }
+
+    @DeleteMapping("/{platformId}/products/{productId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteProduct(@PathVariable Long platformId, @PathVariable Long productId) {
+        deleteProductService.delete(platformId, productId);
     }
 
 }
