@@ -15,6 +15,7 @@ import br.com.company.ecommerce.repositories.ReportsRepository;
 import br.com.company.ecommerce.services.platforms.LoadPlatformByIdService;
 import br.com.company.ecommerce.services.reports.CreateReportService;
 import br.com.company.ecommerce.services.reports.LoadReportByIdOnlyService;
+import br.com.company.ecommerce.services.reports.LoadReportByIdService;
 import br.com.company.ecommerce.services.reports.UpdateReportStatusService;
 import br.com.company.ecommerce.utils.CurrentAccount;
 import jakarta.persistence.EntityNotFoundException;
@@ -23,7 +24,8 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class ReportsServiceImpl implements CreateReportService, LoadReportByIdOnlyService, UpdateReportStatusService {
+public class ReportsServiceImpl
+        implements CreateReportService, LoadReportByIdOnlyService, UpdateReportStatusService, LoadReportByIdService {
 
     private final LoadPlatformByIdService loadPlatformByIdService;
 
@@ -72,6 +74,14 @@ public class ReportsServiceImpl implements CreateReportService, LoadReportByIdOn
         report.setStatus(status);
 
         repository.save(report);
+    }
+
+    @Override
+    public Report loadById(Long id) {
+        Account current = CurrentAccount.get();
+
+        return repository.findByIdAndAccount(id, current)
+                .orElseThrow(() -> new EntityNotFoundException("Unable to find report with provided id"));
     }
 
 }
