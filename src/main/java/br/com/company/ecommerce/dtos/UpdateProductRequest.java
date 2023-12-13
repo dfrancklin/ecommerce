@@ -12,7 +12,7 @@ public class UpdateProductRequest {
 	@Size(min = 1, max = 100, message = "Name must contain between 1 and 100 characters")
 	private String name;
 
-	@Min(value = 0, message = "Price must be greater than zero")
+	@Min(value = 1, message = "Price must be greater than zero")
 	private BigDecimal price;
 
 }

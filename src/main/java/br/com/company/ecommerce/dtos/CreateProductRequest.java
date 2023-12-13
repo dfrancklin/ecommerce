@@ -16,7 +16,7 @@ public class CreateProductRequest {
 	private String name;
 
 	@NotNull(message = "Price must be informed")
-	@Min(value = 0, message = "Price must be greater than zero")
+	@Min(value = 1, message = "Price must be greater than zero")
 	private BigDecimal price;
 
 }
