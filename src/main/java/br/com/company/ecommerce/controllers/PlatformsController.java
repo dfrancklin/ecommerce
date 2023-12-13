@@ -122,7 +122,7 @@ public class PlatformsController {
 
     @PostMapping(path = "/{platformId}/sale", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public Sale createSaleOnPlatform(@PathVariable Long platformId, @RequestBody CreateSaleRequest request) {
+    public Sale createSaleOnPlatform(@PathVariable Long platformId, @Valid @RequestBody CreateSaleRequest request) {
         return createSaleService.create(platformId, request);
     }
 
