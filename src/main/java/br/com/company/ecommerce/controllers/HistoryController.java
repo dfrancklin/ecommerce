@@ -15,9 +15,11 @@ import br.com.company.ecommerce.dtos.UpdateHistoryRequest;
 import br.com.company.ecommerce.models.History;
 import br.com.company.ecommerce.services.history.LoadAllHistoryService;
 import br.com.company.ecommerce.services.history.UpdateHistoryService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+@SecurityRequirement(name = "Bearer Authentication")
 @RestController
 @RequestMapping(path = "/history", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor

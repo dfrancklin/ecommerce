@@ -34,9 +34,11 @@ import br.com.company.ecommerce.services.products.LoadAllProductsService;
 import br.com.company.ecommerce.services.products.LoadProductByIdService;
 import br.com.company.ecommerce.services.products.UpdateProductService;
 import br.com.company.ecommerce.services.sales.CreateSaleService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+@SecurityRequirement(name = "Bearer Authentication")
 @RestController
 @RequestMapping(path = "/platforms", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor

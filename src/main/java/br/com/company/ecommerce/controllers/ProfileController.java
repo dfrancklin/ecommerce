@@ -9,9 +9,11 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.company.ecommerce.dtos.UpdateAccountRequest;
 import br.com.company.ecommerce.models.Account;
 import br.com.company.ecommerce.services.accounts.UpdateAccountService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+@SecurityRequirement(name = "Bearer Authentication")
 @RestController
 @RequestMapping(path = "/profile", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor

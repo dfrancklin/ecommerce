@@ -21,11 +21,13 @@ import br.com.company.ecommerce.dtos.CreateReportRequest;
 import br.com.company.ecommerce.models.Report;
 import br.com.company.ecommerce.services.reports.CreateReportService;
 import br.com.company.ecommerce.services.reports.LoadReportByIdService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+@SecurityRequirement(name = "Bearer Authentication")
 @RestController
 @RequestMapping(path = "/reports", produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
