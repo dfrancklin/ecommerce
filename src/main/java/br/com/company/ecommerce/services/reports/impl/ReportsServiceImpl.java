@@ -6,6 +6,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import br.com.company.ecommerce.annotations.RecordHistory;
 import br.com.company.ecommerce.dtos.CreateReportRequest;
 import br.com.company.ecommerce.enums.ReportStatus;
 import br.com.company.ecommerce.models.Account;
@@ -37,6 +38,7 @@ public class ReportsServiceImpl
     private String reportQueue;
 
     @Override
+    @RecordHistory
     public Report create(CreateReportRequest request) {
         Account current = CurrentAccount.get();
         Platform platform = null;
@@ -70,6 +72,7 @@ public class ReportsServiceImpl
     }
 
     @Override
+    @RecordHistory
     public void updateStatus(Report report, @NonNull ReportStatus status) {
         report.setStatus(status);
 

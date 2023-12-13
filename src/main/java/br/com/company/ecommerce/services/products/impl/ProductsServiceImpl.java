@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import br.com.company.ecommerce.annotations.RecordHistory;
 import br.com.company.ecommerce.dtos.CreateProductRequest;
 import br.com.company.ecommerce.dtos.UpdateProductRequest;
 import br.com.company.ecommerce.models.Platform;
@@ -29,6 +30,7 @@ public class ProductsServiceImpl implements CreateProductService, LoadAllProduct
     private final ProductsRepository repository;
 
     @Override
+    @RecordHistory
     public Product create(Long platformId, CreateProductRequest request) {
         Platform platform = loadPlatformByIdService.loadById(platformId);
 
@@ -57,6 +59,7 @@ public class ProductsServiceImpl implements CreateProductService, LoadAllProduct
     }
 
     @Override
+    @RecordHistory
     public Product update(Long platformId, Long productId, UpdateProductRequest request) {
         Product product = loadById(platformId, productId);
 
@@ -72,6 +75,7 @@ public class ProductsServiceImpl implements CreateProductService, LoadAllProduct
     }
 
     @Override
+    @RecordHistory
     public void delete(Long platformId, Long productId) {
         Product product = loadById(platformId, productId);
 

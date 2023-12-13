@@ -4,6 +4,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import br.com.company.ecommerce.annotations.RecordHistory;
 import br.com.company.ecommerce.dtos.CreateAccountRequest;
 import br.com.company.ecommerce.dtos.UpdateAccountRequest;
 import br.com.company.ecommerce.models.Account;
@@ -24,6 +25,7 @@ public class AccountServiceImpl implements CreateAccountService, UpdateAccountSe
 	private final PasswordEncoder passwordEncoder;
 
 	@Override
+	@RecordHistory
 	public Account create(CreateAccountRequest request) {
 		String encodedPassword = passwordEncoder.encode(request.getPassword());
 
@@ -37,6 +39,7 @@ public class AccountServiceImpl implements CreateAccountService, UpdateAccountSe
 	}
 
 	@Override
+	@RecordHistory
 	public Account update(UpdateAccountRequest request) {
 		Account current = CurrentAccount.get();
 

@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import br.com.company.ecommerce.annotations.RecordHistory;
 import br.com.company.ecommerce.dtos.CreatePlatformRequest;
 import br.com.company.ecommerce.dtos.UpdatePlatformRequest;
 import br.com.company.ecommerce.models.Account;
@@ -27,6 +28,7 @@ public class PlatformsServiceImpl implements CreatePlatformService, LoadAllPlatf
     private final PlatformsRepository repository;
 
     @Override
+    @RecordHistory
     public Platform create(CreatePlatformRequest request) {
         Account current = CurrentAccount.get();
         Platform platform = Platform.builder()
@@ -53,6 +55,7 @@ public class PlatformsServiceImpl implements CreatePlatformService, LoadAllPlatf
     }
 
     @Override
+    @RecordHistory
     public Platform update(Long id, UpdatePlatformRequest request) {
         Platform platform = loadById(id);
 
@@ -68,6 +71,7 @@ public class PlatformsServiceImpl implements CreatePlatformService, LoadAllPlatf
     }
 
     @Override
+    @RecordHistory
     public void delete(Long id) {
         Platform platform = loadById(id);
 

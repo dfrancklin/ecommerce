@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import br.com.company.ecommerce.annotations.RecordHistory;
 import br.com.company.ecommerce.dtos.CreateSaleItemRequest;
 import br.com.company.ecommerce.dtos.CreateSaleRequest;
 import br.com.company.ecommerce.models.Platform;
@@ -31,6 +32,7 @@ public class SaleServiceImpl implements CreateSaleService {
     private final ProductsRepository productsRepository;
 
     @Override
+    @RecordHistory
     public Sale create(Long platformId, CreateSaleRequest request) {
         Platform platform = loadPlatformByIdService.loadById(platformId);
 
