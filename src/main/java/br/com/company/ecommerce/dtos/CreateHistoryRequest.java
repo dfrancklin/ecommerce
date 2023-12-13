@@ -11,6 +11,6 @@ public class CreateHistoryRequest {
 
     private String signature;
 
-    private Object[] arguments;
+    private String arguments;
 
 }

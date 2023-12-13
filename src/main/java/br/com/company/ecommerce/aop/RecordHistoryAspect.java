@@ -37,7 +37,7 @@ public class RecordHistoryAspect {
         CreateHistoryRequest request = CreateHistoryRequest.builder()
                 .accountId(account.getId())
                 .signature(signature.toString())
-                .arguments(arguments)
+                .arguments(mapper.writeValueAsString(arguments))
                 .build();
 
         rabbitTemplate.convertAndSend(historyQueue, mapper.writeValueAsString(request));
