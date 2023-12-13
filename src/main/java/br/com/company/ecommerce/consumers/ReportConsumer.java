@@ -47,7 +47,7 @@ public class ReportConsumer {
             ReportExporterService exporter = reportExporterServices.stream()
                     .filter(item -> item.supports(type))
                     .findFirst()
-                    .orElseThrow();
+                    .orElseThrow(() -> new Exception("No report exporter found for given report type"));
 
             exporter.export(report);
 
