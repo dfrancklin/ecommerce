@@ -92,7 +92,7 @@ public class PlatformsController {
     }
 
     @GetMapping("/{platformId}/products/{productId}")
-    public Product getAllProductsFromPlatform(@PathVariable Long platformId, @PathVariable Long productId) {
+    public Product getProductFromPlatformById(@PathVariable Long platformId, @PathVariable Long productId) {
         return loadProductByIdService.loadById(platformId, productId);
     }
 
