@@ -11,11 +11,13 @@ import br.com.company.ecommerce.repositories.ProductsRepository;
 import br.com.company.ecommerce.services.platforms.LoadPlatformByIdService;
 import br.com.company.ecommerce.services.products.CreateProductService;
 import br.com.company.ecommerce.services.products.LoadAllProductsService;
+import br.com.company.ecommerce.services.products.LoadProductByIdService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class ProductsServiceImpl implements CreateProductService, LoadAllProductsService {
+public class ProductsServiceImpl implements CreateProductService, LoadAllProductsService, LoadProductByIdService {
 
     private final LoadPlatformByIdService loadPlatformByIdService;
 
@@ -39,6 +41,14 @@ public class ProductsServiceImpl implements CreateProductService, LoadAllProduct
         Platform platform = loadPlatformByIdService.loadById(platformId);
 
         return repository.findAllByPlatform(platform, pageable);
+    }
+
+    @Override
+    public Product loadById(Long platformId, Long productId) {
+        Platform platform = loadPlatformByIdService.loadById(platformId);
+
+        return repository.findByIdAndPlatform(productId, platform)
+                .orElseThrow(() -> new EntityNotFoundException("Unable to find product with provided id"));
     }
 
 }

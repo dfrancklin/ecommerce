@@ -27,6 +27,7 @@ import br.com.company.ecommerce.services.platforms.LoadPlatformByIdService;
 import br.com.company.ecommerce.services.platforms.UpdatePlatformService;
 import br.com.company.ecommerce.services.products.CreateProductService;
 import br.com.company.ecommerce.services.products.LoadAllProductsService;
+import br.com.company.ecommerce.services.products.LoadProductByIdService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -48,6 +49,8 @@ public class PlatformsController {
     private final CreateProductService createProductService;
 
     private final LoadAllProductsService loadAllProductsService;
+
+    private final LoadProductByIdService loadProductByIdService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -86,6 +89,11 @@ public class PlatformsController {
     @GetMapping("/{platformId}/products")
     public Page<Product> getAllProductsFromPlatform(@PathVariable Long platformId, @ParameterObject Pageable pageable) {
         return loadAllProductsService.loadAll(platformId, pageable);
+    }
+
+    @GetMapping("/{platformId}/products/{productId}")
+    public Product getAllProductsFromPlatform(@PathVariable Long platformId, @PathVariable Long productId) {
+        return loadProductByIdService.loadById(platformId, productId);
     }
 
 }
