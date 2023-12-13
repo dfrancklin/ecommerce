@@ -36,4 +36,17 @@ public interface SalesRepository extends JpaRepository<Sale, Long> {
 	Page<SaleFromPlatformReport> findAllSalesGroupedByPlatform(@Param("account_id") Long accountId,
 			@Param("start_at") LocalDateTime startAt, @Param("end_at") LocalDateTime endAt, Pageable pageable);
 
+	@Query(value = "select to_char(s.created_at, 'YYYY-MM') as month, p.id as platformId, p.name as platformName, count(distinct s.id) as count, sum(i.amount * i.sold_price)\\:\\:numeric as sum "
+			+ "from sale s "
+			+ "  join platform p on s.platform_id = p.id "
+			+ "  join sale_item i on i.sale_id = s.id "
+			+ "where p.account_id = :account_id "
+			+ "  and s.created_at between :start_at and :end_at "
+			+ "  and p.id = :platform_id "
+			+ "group by month, platformId, platformName "
+			+ "order by month, platformId, platformName", nativeQuery = true)
+	Page<SaleFromPlatformReport> findAllSalesFromPlatform(@Param("account_id") Long accountId,
+			@Param("start_at") LocalDateTime startAt, @Param("end_at") LocalDateTime endAt,
+			@Param("platform_id") Long platformId, Pageable pageable);
+
 }

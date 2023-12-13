@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import br.com.company.ecommerce.annotations.RecordHistory;
 import br.com.company.ecommerce.dtos.CreateReportRequest;
 import br.com.company.ecommerce.enums.ReportStatus;
+import br.com.company.ecommerce.enums.ReportType;
 import br.com.company.ecommerce.models.Account;
 import br.com.company.ecommerce.models.Platform;
 import br.com.company.ecommerce.models.Report;
@@ -40,6 +41,10 @@ public class ReportsServiceImpl
     @Override
     @RecordHistory
     public Report create(CreateReportRequest request) {
+        if (ReportType.SALES_FROM_PLATFORM.equals(request.getType()) && request.getPlatformId() == null) {
+            throw new IllegalArgumentException("PlatformId must be informed when report type is SALES_FROM_PLATFORM");
+        }
+
         Account current = CurrentAccount.get();
         Platform platform = null;
 
