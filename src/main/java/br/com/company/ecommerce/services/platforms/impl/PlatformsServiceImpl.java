@@ -28,8 +28,10 @@ public class PlatformsServiceImpl implements CreatePlatformService, LoadAllPlatf
 
     @Override
     public Platform create(CreatePlatformRequest request) {
+        Account current = CurrentAccount.get();
         Platform platform = Platform.builder()
                 .name(request.getName())
+                .account(current)
                 .build();
 
         return repository.save(platform);
