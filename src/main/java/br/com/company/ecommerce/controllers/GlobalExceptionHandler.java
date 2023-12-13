@@ -91,6 +91,12 @@ public class GlobalExceptionHandler {
 		return of(HttpStatus.BAD_REQUEST, exception, request);
 	}
 
+	@ExceptionHandler(IllegalArgumentException.class)
+	public ResponseEntity<ErrorResponse> illegalArgumentException(IllegalArgumentException exception,
+			WebRequest request) {
+		return of(HttpStatus.BAD_REQUEST, exception, request, exception.getMessage());
+	}
+
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	public ResponseEntity<ErrorResponse> httpMessageNotReadableException(HttpMessageNotReadableException exception,
 			WebRequest request) {
