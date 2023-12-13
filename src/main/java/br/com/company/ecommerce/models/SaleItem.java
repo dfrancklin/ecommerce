@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
@@ -33,5 +35,9 @@ public class SaleItem {
 
 	@ManyToOne
 	private Product product;
+
+	@JsonIgnore
+	@ManyToOne
+	private Sale sale;
 
 }

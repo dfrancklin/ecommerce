@@ -44,7 +44,7 @@ public class Sale {
 	@ManyToOne
 	private Platform platform;
 
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "sale")
 	private List<SaleItem> items;
 
 }

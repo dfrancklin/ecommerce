@@ -45,6 +45,10 @@ public class SaleServiceImpl implements CreateSaleService {
                 .stream()
                 .collect(Collectors.toMap(Product::getId, Function.identity()));
 
+        Sale sale = Sale.builder()
+                .platform(platform)
+                .build();
+
         List<SaleItem> items = request.getItems()
                 .stream()
                 .map(item -> {
@@ -58,15 +62,13 @@ public class SaleServiceImpl implements CreateSaleService {
                             .amount(item.getAmount())
                             .soldPrice(product.getPrice())
                             .product(product)
+                            .sale(sale)
                             .build();
                 })
                 .filter(Objects::nonNull)
                 .toList();
 
-        Sale sale = Sale.builder()
-                .platform(platform)
-                .items(items)
-                .build();
+        sale.setItems(items);
 
         return repository.save(sale);
     }
