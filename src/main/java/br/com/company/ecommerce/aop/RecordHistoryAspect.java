@@ -1,7 +1,6 @@
 package br.com.company.ecommerce.aop;
 
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -30,13 +29,14 @@ public class RecordHistoryAspect {
     @Around("@annotation(br.com.company.ecommerce.annotations.RecordHistory)")
     public Object recordHistory(ProceedingJoinPoint joinPoint) throws Throwable {
         Account account = CurrentAccount.get();
-        Signature signature = joinPoint.getSignature();
+        String signature = joinPoint.getSignature().getDeclaringType().getSimpleName() + "."
+                + joinPoint.getSignature().getName();
         Object[] arguments = joinPoint.getArgs();
         Object result = joinPoint.proceed();
 
         CreateHistoryRequest request = CreateHistoryRequest.builder()
                 .accountId(account.getId())
-                .signature(signature.toString())
+                .signature(signature)
                 .arguments(mapper.writeValueAsString(arguments))
                 .build();
 
