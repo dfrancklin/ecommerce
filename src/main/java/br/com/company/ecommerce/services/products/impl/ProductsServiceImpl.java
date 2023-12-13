@@ -3,8 +3,10 @@ package br.com.company.ecommerce.services.products.impl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import br.com.company.ecommerce.dtos.CreateProductRequest;
+import br.com.company.ecommerce.dtos.UpdateProductRequest;
 import br.com.company.ecommerce.models.Platform;
 import br.com.company.ecommerce.models.Product;
 import br.com.company.ecommerce.repositories.ProductsRepository;
@@ -12,12 +14,14 @@ import br.com.company.ecommerce.services.platforms.LoadPlatformByIdService;
 import br.com.company.ecommerce.services.products.CreateProductService;
 import br.com.company.ecommerce.services.products.LoadAllProductsService;
 import br.com.company.ecommerce.services.products.LoadProductByIdService;
+import br.com.company.ecommerce.services.products.UpdateProductService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class ProductsServiceImpl implements CreateProductService, LoadAllProductsService, LoadProductByIdService {
+public class ProductsServiceImpl
+        implements CreateProductService, LoadAllProductsService, LoadProductByIdService, UpdateProductService {
 
     private final LoadPlatformByIdService loadPlatformByIdService;
 
@@ -49,6 +53,21 @@ public class ProductsServiceImpl implements CreateProductService, LoadAllProduct
 
         return repository.findByIdAndPlatform(productId, platform)
                 .orElseThrow(() -> new EntityNotFoundException("Unable to find product with provided id"));
+    }
+
+    @Override
+    public Product update(Long platformId, Long productId, UpdateProductRequest request) {
+        Product product = loadById(platformId, productId);
+
+        if (StringUtils.hasText(request.getName())) {
+            product.setName(request.getName());
+        }
+
+        if (request.getPrice() != null) {
+            product.setPrice(request.getPrice());
+        }
+
+        return repository.save(product);
     }
 
 }

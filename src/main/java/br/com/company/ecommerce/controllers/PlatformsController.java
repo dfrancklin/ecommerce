@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.company.ecommerce.dtos.CreatePlatformRequest;
 import br.com.company.ecommerce.dtos.CreateProductRequest;
 import br.com.company.ecommerce.dtos.UpdatePlatformRequest;
+import br.com.company.ecommerce.dtos.UpdateProductRequest;
 import br.com.company.ecommerce.models.Platform;
 import br.com.company.ecommerce.models.Product;
 import br.com.company.ecommerce.services.platforms.CreatePlatformService;
@@ -28,6 +29,7 @@ import br.com.company.ecommerce.services.platforms.UpdatePlatformService;
 import br.com.company.ecommerce.services.products.CreateProductService;
 import br.com.company.ecommerce.services.products.LoadAllProductsService;
 import br.com.company.ecommerce.services.products.LoadProductByIdService;
+import br.com.company.ecommerce.services.products.UpdateProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -51,6 +53,8 @@ public class PlatformsController {
     private final LoadAllProductsService loadAllProductsService;
 
     private final LoadProductByIdService loadProductByIdService;
+
+    private final UpdateProductService updateProductService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -94,6 +98,12 @@ public class PlatformsController {
     @GetMapping("/{platformId}/products/{productId}")
     public Product getProductFromPlatformById(@PathVariable Long platformId, @PathVariable Long productId) {
         return loadProductByIdService.loadById(platformId, productId);
+    }
+
+    @PutMapping("/{platformId}/products/{productId}")
+    public Product updateProduct(@PathVariable Long platformId, @PathVariable Long productId,
+            @Valid @RequestBody UpdateProductRequest request) {
+        return updateProductService.update(platformId, productId, request);
     }
 
 }
