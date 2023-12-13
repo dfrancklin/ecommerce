@@ -8,16 +8,19 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.company.ecommerce.dtos.CreatePlatformRequest;
+import br.com.company.ecommerce.dtos.UpdatePlatformRequest;
 import br.com.company.ecommerce.models.Platform;
 import br.com.company.ecommerce.services.platforms.CreatePlatformService;
 import br.com.company.ecommerce.services.platforms.LoadAllPlatformsService;
 import br.com.company.ecommerce.services.platforms.LoadPlatformByIdService;
+import br.com.company.ecommerce.services.platforms.UpdatePlatformService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -31,6 +34,8 @@ public class PlatformsController {
     private final LoadAllPlatformsService loadAllPlatformsService;
 
     private final LoadPlatformByIdService loadPlatformByIdService;
+
+    private final UpdatePlatformService updatePlatformService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -46,6 +51,11 @@ public class PlatformsController {
     @GetMapping("/{id}")
     public Platform getAllPlatforms(@PathVariable Long id) {
         return loadPlatformByIdService.loadById(id);
+    }
+
+    @PutMapping("/{id}")
+    public Platform updatePlatform(@PathVariable Long id, @Valid @RequestBody UpdatePlatformRequest request) {
+        return updatePlatformService.update(id, request);
     }
 
 }
