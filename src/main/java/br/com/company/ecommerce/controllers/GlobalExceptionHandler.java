@@ -78,7 +78,12 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(DataIntegrityViolationException.class)
 	public ResponseEntity<ErrorResponse> dataIntegrityViolationException(DataIntegrityViolationException exception,
 			WebRequest request) {
-		return of(HttpStatus.BAD_REQUEST, exception, request, POSSIBLY_DUPLICATED_RECORDS_MESSAGE);
+
+		if (exception.getMessage().contains("duplicate key value")) {
+			return of(HttpStatus.BAD_REQUEST, exception, request, POSSIBLY_DUPLICATED_RECORDS_MESSAGE);
+		}
+
+		return exception(exception, request);
 	}
 
 	@ExceptionHandler(ValidationException.class)
