@@ -54,3 +54,12 @@ create table report (
     account_id int not null references account (id) on delete cascade,
     unique (type, start_at, end_at, platform_id)
 );
+
+create table history (
+    id serial primary key not null,
+    signature text not null,
+    arguments text not null,
+    created_at timestamp default now(),
+    updated_at timestamp,
+    account_id int not null references account (id) on delete cascade
+);

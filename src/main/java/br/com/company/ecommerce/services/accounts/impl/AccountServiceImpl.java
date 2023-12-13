@@ -9,13 +9,15 @@ import br.com.company.ecommerce.dtos.UpdateAccountRequest;
 import br.com.company.ecommerce.models.Account;
 import br.com.company.ecommerce.repositories.AccountsRepository;
 import br.com.company.ecommerce.services.accounts.CreateAccountService;
+import br.com.company.ecommerce.services.accounts.LoadAccountByIdService;
 import br.com.company.ecommerce.services.accounts.UpdateAccountService;
 import br.com.company.ecommerce.utils.CurrentAccount;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class AccountServiceImpl implements CreateAccountService, UpdateAccountService {
+public class AccountServiceImpl implements CreateAccountService, UpdateAccountService, LoadAccountByIdService {
 
 	private final AccountsRepository repository;
 
@@ -52,6 +54,12 @@ public class AccountServiceImpl implements CreateAccountService, UpdateAccountSe
 		}
 
 		return repository.save(current);
+	}
+
+	@Override
+	public Account loadById(Long id) {
+		return repository.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException("Unable to find account with provided id"));
 	}
 
 }
