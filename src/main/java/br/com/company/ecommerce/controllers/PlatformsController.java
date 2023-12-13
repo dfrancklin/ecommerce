@@ -16,13 +16,16 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.company.ecommerce.dtos.CreatePlatformRequest;
+import br.com.company.ecommerce.dtos.CreateProductRequest;
 import br.com.company.ecommerce.dtos.UpdatePlatformRequest;
 import br.com.company.ecommerce.models.Platform;
+import br.com.company.ecommerce.models.Product;
 import br.com.company.ecommerce.services.platforms.CreatePlatformService;
 import br.com.company.ecommerce.services.platforms.DeletePlatformService;
 import br.com.company.ecommerce.services.platforms.LoadAllPlatformsService;
 import br.com.company.ecommerce.services.platforms.LoadPlatformByIdService;
 import br.com.company.ecommerce.services.platforms.UpdatePlatformService;
+import br.com.company.ecommerce.services.products.CreateProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -40,6 +43,8 @@ public class PlatformsController {
     private final UpdatePlatformService updatePlatformService;
 
     private final DeletePlatformService deletePlatformService;
+
+    private final CreateProductService createProductService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -66,6 +71,13 @@ public class PlatformsController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePlatform(@PathVariable Long id) {
         deletePlatformService.delete(id);
+    }
+
+    @PostMapping("/{platformId}/product")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Product createProductOnPlatform(@PathVariable Long platformId,
+            @Valid @RequestBody CreateProductRequest request) {
+        return createProductService.create(platformId, request);
     }
 
 }
