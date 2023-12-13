@@ -1,5 +1,11 @@
 package br.com.company.ecommerce.controllers;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,11 +21,14 @@ import br.com.company.ecommerce.dtos.CreateReportRequest;
 import br.com.company.ecommerce.models.Report;
 import br.com.company.ecommerce.services.reports.CreateReportService;
 import br.com.company.ecommerce.services.reports.LoadReportByIdService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping(path = "/reports", produces = MediaType.APPLICATION_JSON_VALUE)
+@Slf4j
 @RequiredArgsConstructor
 public class ReportsController {
 
@@ -39,6 +48,24 @@ public class ReportsController {
     @GetMapping("/{id}")
     public Report getReportById(@PathVariable Long id) {
         return loadReportByIdService.loadById(id);
+    }
+
+    @GetMapping(path = "/{id}/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public void downloadReportById(@PathVariable Long id, HttpServletResponse response) throws IOException {
+        Report report = loadReportByIdService.loadById(id);
+        File file = new File(path + File.separator + report.getFilename());
+
+        response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
+        response.addHeader("Content-Disposition", "attachment; filename=" + report.getFilename());
+
+        try (InputStream input = new FileInputStream(file)) {
+            IOUtils.copy(input, response.getOutputStream());
+        } catch (Exception e) {
+            log.error("Unable to read file from report id {}. Error: {}", id, e.getMessage());
+            log.debug("Error stack:", e);
+        }
+
+        response.flushBuffer();
     }
 
 }
