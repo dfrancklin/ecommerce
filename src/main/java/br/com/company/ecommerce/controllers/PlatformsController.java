@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +19,7 @@ import br.com.company.ecommerce.dtos.CreatePlatformRequest;
 import br.com.company.ecommerce.dtos.UpdatePlatformRequest;
 import br.com.company.ecommerce.models.Platform;
 import br.com.company.ecommerce.services.platforms.CreatePlatformService;
+import br.com.company.ecommerce.services.platforms.DeletePlatformService;
 import br.com.company.ecommerce.services.platforms.LoadAllPlatformsService;
 import br.com.company.ecommerce.services.platforms.LoadPlatformByIdService;
 import br.com.company.ecommerce.services.platforms.UpdatePlatformService;
@@ -36,6 +38,8 @@ public class PlatformsController {
     private final LoadPlatformByIdService loadPlatformByIdService;
 
     private final UpdatePlatformService updatePlatformService;
+
+    private final DeletePlatformService deletePlatformService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -56,6 +60,12 @@ public class PlatformsController {
     @PutMapping("/{id}")
     public Platform updatePlatform(@PathVariable Long id, @Valid @RequestBody UpdatePlatformRequest request) {
         return updatePlatformService.update(id, request);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletePlatform(@PathVariable Long id) {
+        deletePlatformService.delete(id);
     }
 
 }

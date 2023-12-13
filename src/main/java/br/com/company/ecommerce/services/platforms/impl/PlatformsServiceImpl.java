@@ -11,6 +11,7 @@ import br.com.company.ecommerce.models.Account;
 import br.com.company.ecommerce.models.Platform;
 import br.com.company.ecommerce.repositories.PlatformsRepository;
 import br.com.company.ecommerce.services.platforms.CreatePlatformService;
+import br.com.company.ecommerce.services.platforms.DeletePlatformService;
 import br.com.company.ecommerce.services.platforms.LoadAllPlatformsService;
 import br.com.company.ecommerce.services.platforms.LoadPlatformByIdService;
 import br.com.company.ecommerce.services.platforms.UpdatePlatformService;
@@ -20,8 +21,8 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class PlatformsServiceImpl
-        implements CreatePlatformService, LoadAllPlatformsService, LoadPlatformByIdService, UpdatePlatformService {
+public class PlatformsServiceImpl implements CreatePlatformService, LoadAllPlatformsService, LoadPlatformByIdService,
+        UpdatePlatformService, DeletePlatformService {
 
     private final PlatformsRepository repository;
 
@@ -62,6 +63,13 @@ public class PlatformsServiceImpl
         }
 
         return repository.save(platform);
+    }
+
+    @Override
+    public void delete(Long id) {
+        Platform platform = loadById(id);
+
+        repository.delete(platform);
     }
 
 }
