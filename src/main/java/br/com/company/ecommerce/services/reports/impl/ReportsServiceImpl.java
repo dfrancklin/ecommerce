@@ -7,18 +7,23 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import br.com.company.ecommerce.dtos.CreateReportRequest;
+import br.com.company.ecommerce.enums.ReportStatus;
 import br.com.company.ecommerce.models.Account;
 import br.com.company.ecommerce.models.Platform;
 import br.com.company.ecommerce.models.Report;
 import br.com.company.ecommerce.repositories.ReportsRepository;
 import br.com.company.ecommerce.services.platforms.LoadPlatformByIdService;
 import br.com.company.ecommerce.services.reports.CreateReportService;
+import br.com.company.ecommerce.services.reports.LoadReportByIdOnlyService;
+import br.com.company.ecommerce.services.reports.UpdateReportStatusService;
 import br.com.company.ecommerce.utils.CurrentAccount;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class ReportsServiceImpl implements CreateReportService {
+public class ReportsServiceImpl implements CreateReportService, LoadReportByIdOnlyService, UpdateReportStatusService {
 
     private final LoadPlatformByIdService loadPlatformByIdService;
 
@@ -54,6 +59,19 @@ public class ReportsServiceImpl implements CreateReportService {
         rabbitTemplate.convertAndSend(reportQueue, created.getId().toString());
 
         return created;
+    }
+
+    @Override
+    public Report loadByIdOnly(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Unable to find report with provided id"));
+    }
+
+    @Override
+    public void updateStatus(Report report, @NonNull ReportStatus status) {
+        report.setStatus(status);
+
+        repository.save(report);
     }
 
 }
