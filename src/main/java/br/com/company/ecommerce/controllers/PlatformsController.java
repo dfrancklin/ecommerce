@@ -76,16 +76,16 @@ public class PlatformsController {
         deletePlatformService.delete(id);
     }
 
-    @PostMapping("/{platformId}/product")
+    @PostMapping("/{platformId}/products")
     @ResponseStatus(HttpStatus.CREATED)
     public Product createProductOnPlatform(@PathVariable Long platformId,
             @Valid @RequestBody CreateProductRequest request) {
         return createProductService.create(platformId, request);
     }
 
-    @GetMapping("/{id}/products")
-    public Page<Product> getAllProductsFromPlatform(@PathVariable Long id, @ParameterObject Pageable pageable) {
-        return loadAllProductsService.loadAll(id, pageable);
+    @GetMapping("/{platformId}/products")
+    public Page<Product> getAllProductsFromPlatform(@PathVariable Long platformId, @ParameterObject Pageable pageable) {
+        return loadAllProductsService.loadAll(platformId, pageable);
     }
 
 }
