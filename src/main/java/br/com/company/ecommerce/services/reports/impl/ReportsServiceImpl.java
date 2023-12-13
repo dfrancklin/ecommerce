@@ -72,7 +72,6 @@ public class ReportsServiceImpl
     }
 
     @Override
-    @RecordHistory
     public void updateStatus(Report report, @NonNull ReportStatus status) {
         report.setStatus(status);
 
